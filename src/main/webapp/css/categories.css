@@ -1,0 +1,114 @@
+@charset "UTF-8";
+
+/* ===== PAGE TITLE ===== */
+.page-title {
+    text-align: center;
+    margin: 160px 0 20px 0;
+    font-size: 32px;
+    font-weight: 800;
+    color: #1c3d5a;
+    letter-spacing: 0.5px;
+}
+
+/* ===== SOFT BACKGROUND SECTION (no need to wrap in JSP) ===== */
+body {
+    background: linear-gradient(to bottom, #f7f9fc, #eef2f5);
+}
+
+/* ===== CARD GRID ===== */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);   
+    gap: 35px;
+    width: 90%;
+    max-width: 1400px;
+    margin: 0 auto 60px auto;               
+    padding-top: 20px;
+}
+
+
+/* ===== EACH CATEGORY CARD ===== */
+.card {
+    background: #ffffff;
+    padding: 22px;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e8e8e8;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    min-height: 430px;
+    transition: 0.25s ease;
+}
+
+/* Hover effect */
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+}
+
+/* ===== IMAGE ===== */
+.service-img {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    border-radius: 14px;
+    margin-bottom: 18px;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+}
+
+/* ===== TITLE ===== */
+.card h3 {
+    margin-bottom: 8px;
+    font-size: 20px;
+    font-weight: 800;
+    color: #1b2c48;
+}
+
+/* ===== DESCRIPTION ===== */
+.card p {
+    margin-bottom: 20px;
+    line-height: 1.5;
+    font-size: 15px;
+    color: #555;
+    flex-grow: 1; /* pushes button down */
+}
+
+/* ===== BUTTON ===== */
+.card .btn-primary {
+    align-self: flex-start;
+    padding: 10px 22px;
+    font-size: 15px;
+    border-radius: 10px;
+    background: #1c3d5a;
+    font-weight: 700;
+}
+
+.card .btn-primary:hover {
+    background: #153049;
+}
+
+/* Large tablets / small laptops */
+@media (max-width: 1200px) {
+    .card-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .card-container {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+.duration {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+}
+
+

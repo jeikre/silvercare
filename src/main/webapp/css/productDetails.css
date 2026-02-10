@@ -1,0 +1,147 @@
+.product-details-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 40px;
+    display: flex;
+    gap: 60px;
+    margin-top: 180px; 
+    background: #fff6ea;
+    border-radius: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+
+/* ===== PRODUCT IMAGE ===== */
+.product-details-image {
+    width: 450px;
+    height: 450px;
+    object-fit: contain;
+
+    border-radius: 20px;
+    background: white;
+    padding: 20px; /* Add inner padding like services */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+
+/* ====== BACK BUTTON ===== */
+.back-btn {
+    display: inline-block;
+    margin-top: 25px;
+    background: #4a5568;
+    color: white;
+    padding: 10px 22px;
+    font-size: 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: 0.25s;
+}
+
+.back-btn:hover {
+    background: #2d3748;
+    transform: translateY(-1px);
+}
+
+
+
+/* ===== PRODUCT INFO ===== */
+.product-details-info {
+    flex: 1;
+}
+
+.product-details-info h1 {
+    font-size: 30px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.product-details-category {
+    font-size: 16px;
+    font-weight: 600;
+    color: #7FB233;
+    margin-bottom: 15px;
+}
+
+.product-details-info p {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* ===== PRICE ===== */
+.product-details-price {
+    font-size: 26px;
+    font-weight: 700;
+    color: #b22222;
+    margin-bottom: 25px;
+}
+
+/* ===== QUANTITY ROW ===== */
+.qty-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* ===== QUANTITY BOX ===== */
+.qty-box {
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #dcdcdc;
+    background: #f4f4f4;
+}
+
+.qty-btn {
+    width: 40px;
+    height: 45px;
+    border: none;
+    background: #e8e8e8;
+    font-size: 20px;
+    color: #444;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.qty-btn:hover {
+    background: #dadada;
+}
+
+.qty-input {
+    width: 55px;
+    height: 45px;
+    text-align: center;
+    border: none;
+    background: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* ===== ADD TO CART BUTTON ===== */
+.add-cart-btn {
+    background: #0077ff;
+    color: white;
+    font-weight: 700;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 17px;
+    letter-spacing: 0.5px;
+    transition: 0.25s;
+}
+
+.add-cart-btn:hover {
+    background: #005ed1;
+    transform: translateY(-1px);
+}
+
+
+
+

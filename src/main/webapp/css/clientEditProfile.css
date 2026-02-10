@@ -1,0 +1,233 @@
+@charset "UTF-8";
+
+/* Complete redesign to match profile page styling */
+
+/* Profile Container */
+.profile-container {
+  flex: 1;
+  padding-top: 120px;
+  padding-bottom: 60px;
+}
+
+/* Hero Header */
+.profile-hero {
+  background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+  padding: 60px 40px;
+  text-align: center;
+  color: white;
+  margin-bottom: 50px;
+}
+
+.hero-content h1 {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.hero-content p {
+  font-size: 16px;
+  opacity: 0.95;
+  font-weight: 400;
+}
+
+/* Profile Wrapper */
+.profile-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Profile Card */
+.profile-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  padding: 50px;
+  width: 100%;
+  border: 1px solid #e8eef5;
+}
+
+.profile-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Form Field Items */
+.form-field-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid #f0f2f5;
+  transition: all 0.3s ease;
+}
+
+.form-field-item:last-of-type {
+  border-bottom: none;
+}
+
+.form-field-item:hover {
+  background-color: #f9fafc;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-left: -16px;
+  margin-right: -16px;
+  border-radius: 8px;
+}
+
+/* Field Icon */
+.field-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+  border-radius: 10px;
+  color: white;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.form-field-item:hover .field-icon {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+/* Field Content */
+.field-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-content label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Input Fields */
+.field-content input[type="text"],
+.field-content input[type="number"],
+.field-content input[type="email"] {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #f5f7fa;
+  border: 1px solid #e0e6ed;
+  font-size: 16px;
+  font-weight: 400;
+  color: #1a1a1a;
+  transition: all 0.2s ease;
+}
+
+.field-content input:focus {
+  outline: none;
+  border-color: #1e88e5;
+  background: #ffffff;
+  box-shadow: 0 0 8px rgba(30, 136, 229, 0.2);
+}
+
+/* Button Style */
+.btn-primary {
+  margin-top: 30px !important;
+  padding: 14px 0 !important;
+  width: 100%;
+  background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 4px 16px rgba(30, 136, 229, 0.3) !important;
+  transform: translateY(-2px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-container {
+    padding-top: 100px;
+    padding-bottom: 40px;
+  }
+
+  .profile-hero {
+    padding: 40px 20px;
+    margin-bottom: 30px;
+  }
+
+  .hero-content h1 {
+    font-size: 32px;
+  }
+
+  .profile-card {
+    padding: 30px;
+  }
+
+  .form-field-item {
+    gap: 16px;
+    padding: 16px 0;
+  }
+
+  .field-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .field-content label {
+    font-size: 11px;
+  }
+
+  .field-content input {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-container {
+    padding-top: 80px;
+  }
+
+  .profile-hero {
+    padding: 30px 15px;
+  }
+
+  .hero-content h1 {
+    font-size: 26px;
+  }
+
+  .profile-card {
+    padding: 20px;
+  }
+
+  .form-field-item {
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  .field-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .field-content input {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+}

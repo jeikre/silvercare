@@ -1,0 +1,85 @@
+@charset "UTF-8";
+/* Center layout */
+.form-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 80px;
+}
+
+/* White card for form */
+.form-container form {
+    background: #ffffff;
+    width: 550px;
+    padding: 35px 45px;
+    border-radius: 16px;
+    box-shadow: 0px 6px 22px rgba(0, 0, 0, 0.10);
+}
+
+/* Page Title */
+.page-title {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 36px;
+    font-weight: 700;
+    color: #1c3d5a;
+}
+
+/* Labels */
+.form-container label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+    font-size: 15px;
+}
+
+/* Inputs and textarea */
+.form-container input,
+.form-container textarea {
+    width: 100%;
+    background: #f6f8ff;
+    padding: 14px;
+    font-size: 15px;
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    transition: all 0.25s ease-in-out;
+}
+
+.form-container input:focus,
+.form-container textarea:focus {
+    background: #ffffff;
+    border-color: #1c3d5a;
+    box-shadow: 0 0 0 2px rgba(28, 61, 90, 0.20);
+    outline: none;
+}
+
+/* Bigger textarea */
+.form-container textarea {
+    height: 110px;
+    resize: none;
+}
+
+/* Save button */
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: #1c3d5a;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.btn-primary:hover {
+    background: #153049;
+}
+
+/* Extra spacing for bottom */
+.form-container form button {
+    margin-top: 5px;
+}

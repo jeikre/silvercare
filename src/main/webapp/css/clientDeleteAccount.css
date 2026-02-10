@@ -1,0 +1,48 @@
+/* Page Title */
+.page-title {
+    text-align: center;
+    margin-top: 60px;        /* pushes card down */
+    font-size: 36px;
+    font-weight: 700;
+    color: #1c3d5a;
+}
+
+/* Container centers content */
+.form-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;         /* prevents overlap */
+}
+
+/* Delete card styling */
+.delete-card {
+    background: #ffffff;
+    padding: 35px 45px;
+    width: 480px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* Warning message */
+.delete-card p {
+    font-size: 18px;
+    color: #444;
+    margin-bottom: 25px;
+}
+
+/* Red danger button */
+.btn-danger {
+    background: #c82333;
+    color: white;
+    padding: 12px 22px;
+    font-size: 17px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.btn-danger:hover {
+    background: #a71d2a;
+}

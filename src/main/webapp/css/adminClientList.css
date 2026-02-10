@@ -1,0 +1,43 @@
+/* ===== TABLE WRAPPER ===== */
+.client-table {
+    width: 95%;
+    margin: 40px auto 100px;
+    border-collapse: collapse;
+    font-family: "Segoe UI", sans-serif;
+    border: 2px solid #000; /* strong outer border */
+}
+
+/* ===== HEADER ===== */
+.client-table thead th {
+    background: #00b7ff;  /* bright cyan */
+    color: #000;          /* black text */
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: left;
+    border: 2px solid #000; /* dark border */
+}
+
+/* ===== BODY CELLS ===== */
+.client-table tbody td {
+    padding: 14px 18px;
+    font-size: 15px;
+    color: #222;
+    border: 1px solid #000; /* solid black lines */
+}
+
+/* ===== ROW HOVER ===== */
+.client-table tbody tr:hover td {
+    background: #e0faff; /* light cyan highlight */
+    cursor: default;
+}
+
+/* ===== TITLE ===== */
+.page-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 800;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    color: #033f57;
+}

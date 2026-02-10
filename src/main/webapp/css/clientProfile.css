@@ -1,0 +1,204 @@
+/* Profile Page Styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f5f7fa;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.profile-container {
+  flex: 1;
+  padding-top: 120px;
+  padding-bottom: 60px;
+}
+
+/* Hero Header */
+.profile-hero {
+  background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+  padding: 60px 40px;
+  text-align: center;
+  color: white;
+  margin-bottom: 50px;
+}
+
+.hero-content h1 {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.hero-content p {
+  font-size: 16px;
+  opacity: 0.95;
+  font-weight: 400;
+}
+
+/* Profile Wrapper */
+.profile-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Profile Card */
+.profile-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  padding: 50px;
+  width: 100%;
+  border: 1px solid #e8eef5;
+}
+
+/* Profile Info Item */
+.profile-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid #f0f2f5;
+  transition: all 0.3s ease;
+}
+
+.profile-info-item:last-child {
+  border-bottom: none;
+}
+
+.profile-info-item:hover {
+  background-color: #f9fafc;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-left: -16px;
+  margin-right: -16px;
+  border-radius: 8px;
+}
+
+/* Info Icon */
+.info-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+  border-radius: 10px;
+  color: white;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.profile-info-item:hover .info-icon {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+/* Info Content */
+.info-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-value {
+  font-size: 18px;
+  font-weight: 500;
+  color: #1a1a1a;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-container {
+    padding-top: 100px;
+    padding-bottom: 40px;
+  }
+
+  .profile-hero {
+    padding: 40px 20px;
+    margin-bottom: 30px;
+  }
+
+  .hero-content h1 {
+    font-size: 32px;
+  }
+
+  .profile-card {
+    padding: 30px;
+  }
+
+  .profile-info-item {
+    gap: 16px;
+    padding: 16px 0;
+  }
+
+  .info-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .info-value {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-container {
+    padding-top: 80px;
+  }
+
+  .profile-hero {
+    padding: 30px 15px;
+  }
+
+  .hero-content h1 {
+    font-size: 26px;
+  }
+
+  .profile-card {
+    padding: 20px;
+  }
+
+  .profile-info-item {
+    gap: 12px;
+  }
+
+  .info-value {
+    font-size: 14px;
+  }
+}
+
+/* Force the done button to be full width and centered below the card */
+.profile-wrapper {
+    display: block !important;   /* override flex/grid behavior */
+}
+
+.done-button-container {
+    text-align: center;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+
+.done-button {
+    display: inline-block;
+}

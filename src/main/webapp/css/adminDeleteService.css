@@ -1,0 +1,52 @@
+/* Center alignment of the whole section */
+.form-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 100px;
+}
+
+/* Main card */
+.delete-card {
+    width: 600px;
+    background: #ffffff;
+    padding: 40px 35px;
+    border-radius: 16px;
+    box-shadow: 0px 6px 22px rgba(0,0,0,0.10);
+    text-align: center;
+}
+
+/* Confirm text */
+.delete-card p {
+    font-size: 20px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+/* Delete button */
+.delete-card .btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: #d32f2f;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.delete-card .btn-primary:hover {
+    background: #b71c1c;
+}
+
+.page-title {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 36px;
+    font-weight: 700;
+    color: #1c3d5a;
+}
+

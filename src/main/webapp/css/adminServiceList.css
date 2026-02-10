@@ -1,0 +1,118 @@
+@charset "UTF-8";
+@charset "UTF-8";
+
+/* ===== PAGE BACKGROUND ===== */
+body {
+    background: #f2f4f7 !important;
+}
+
+/* ===== CONTAINER WRAPPER ===== */
+.admin-service-wrapper {
+    max-width: 1200px;
+    margin: 40px auto 60px auto;
+    padding: 40px 30px 70px;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0px 10px 35px rgba(0,0,0,0.06);
+}
+
+/* ===== PAGE TITLE ===== */
+.page-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 800;
+    margin-top: 160px;
+    margin-bottom: 40px;
+    color: #0f2b48;
+    letter-spacing: 0.5px;
+}
+
+
+/* ===== GRID LAYOUT FOR SERVICE CARDS ===== */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 35px;
+}
+
+/* ===== SERVICE CARD ===== */
+.card {
+    background: #ffffff;
+    padding: 25px 25px 30px;
+    border-radius: 16px;
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.07);
+    transition: all 0.25s ease;
+    border-left: 6px solid #163a5f;
+}
+
+/* Hover animation */
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0px 12px 32px rgba(0,0,0,0.12);
+}
+
+/* ===== SERVICE TITLE ===== */
+.card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.35;
+    color: #0f2b48;
+    letter-spacing: 0.3px;
+}
+
+
+/* ===== SERVICE DETAILS TEXT ===== */
+.card p {
+    margin: 3px 0 8px;
+    color: #444;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.card p strong {
+    color: #1a1a1a;
+    font-weight: 600;
+}
+
+/* ===== BUTTONS INSIDE SERVICE CARDS ===== */
+.card .btn-primary,
+.card .btn-secondary {
+	 text-align: center;      /* Center the text */
+    justify-content: center; /* Ensures perfect centering */
+    display: flex;           /* Flex required for justify-content */
+    align-items: center;     /* vertically centered text */
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    margin-top: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: 0.25s ease;
+}
+
+/* Edit button (blue) */
+.card .btn-primary {
+    background: #163a5f;
+    color: white;
+}
+.card .btn-primary:hover {
+    background: #0f2b48;
+}
+
+/* Delete button (red) */
+.card .btn-secondary {
+    background: #d40000;
+    color: white;
+}
+.card .btn-secondary:hover {
+    background: #a30000;
+}
+
+.card a {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}

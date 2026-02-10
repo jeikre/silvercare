@@ -1,0 +1,172 @@
+@charset "UTF-8";
+
+/* ===== PAGE BACKGROUND ===== */
+body {
+  background: #f2f4f7 !important;
+}
+
+/* ===== HERO SECTION ===== */
+.admin-hero {
+  background: linear-gradient(135deg, #0b7dc2 100%, #163a5f 0%);
+  color: #ffffff;
+  padding: 60px 30px;
+  text-align: center;
+  border-bottom: 1px solid rgba(11, 125, 194, 0.2);
+  margin-top: 130px;
+}
+
+.hero-content h1 {
+  font-size: 42px;
+  font-weight: 900;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.hero-content p {
+  font-size: 16px;
+  font-weight: 400;
+  color: #ffffff !important;
+  opacity: 1 !important;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+
+/* ===== DASHBOARD WRAPPER ===== */
+.admin-dashboard-wrapper {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 30px;
+  margin-top: 20px;
+}
+
+/* ===== GRID LAYOUT ===== */
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+/* ===== ADMIN CARDS ===== */
+.card {
+  background: #ffffff;
+  padding: 40px 30px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0px 4px 20px rgba(22, 58, 95, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(22, 58, 95, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Hover effect with elevation and shadow */
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0px 12px 30px rgba(11, 125, 194, 0.15);
+  border-color: rgba(11, 125, 194, 0.2);
+}
+
+/* ===== CARD ICON STYLING ===== */
+.card-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: #ffffff;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+/* Icon colors for each card type */
+.services-icon {
+  background: linear-gradient(135deg, #163a5f 0%, #1a4a7a 100%);
+}
+
+.add-service-icon {
+  background: linear-gradient(135deg, #0b7dc2 0%, #0a5fa0 100%);
+}
+
+.clients-icon {
+  background: linear-gradient(135deg, #2aa82c 0%, #1f7f20 100%);
+}
+
+/* Icon hover effect */
+.card:hover .card-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* ===== CARD HEADING ===== */
+.card h3 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: #163a5f;
+}
+
+/* ===== CARD DESCRIPTION ===== */
+.card p {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 25px;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+/* ===== BUTTONS INSIDE ADMIN CARDS ===== */
+.card .btn-primary {
+  display: inline-block;
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #163a5f 0%, #1a4a7a 100%);
+  color: #ffffff;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+}
+
+/* Enhanced hover state for buttons */
+.card .btn-primary:hover {
+  background: linear-gradient(135deg, #0f2b48 0%, #113a5c 100%);
+  box-shadow: 0px 6px 16px rgba(11, 125, 194, 0.25);
+  transform: translateY(-2px);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media screen and (max-width: 768px) {
+  .admin-hero {
+    padding: 40px 20px;
+  }
+
+  .hero-content h1 {
+    font-size: 32px;
+  }
+
+  .hero-content p {
+    font-size: 14px;
+  }
+
+  .admin-dashboard-wrapper {
+    padding: 0 20px;
+  }
+
+  .card-container {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 30px 20px;
+  }
+}
+.caregivers-icon {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+}

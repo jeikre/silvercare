@@ -1,0 +1,283 @@
+/* =========================
+   Silver Care - Caregivers
+   ========================= */
+
+:root{
+  --sc-bg: #f5f9ff;
+  --sc-panel: #ffffff;
+  --sc-text: #0f172a;
+  --sc-muted: #64748b;
+  --sc-border: rgba(15, 23, 42, 0.08);
+  --sc-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  --sc-shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.07);
+
+  --sc-blue: #1d4ed8;
+  --sc-blue2: #2563eb;
+  --sc-blue3: #0b3aa5;
+  --sc-chip: #eef2ff;
+  --sc-radius: 20px;
+}
+
+body{
+  background: var(--sc-bg);
+  color: var(--sc-text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* page container */
+.sc-wrap{
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 26px 18px 70px;
+}
+
+/* top hero panel */
+.sc-hero{
+  background:
+    radial-gradient(1200px 380px at 25% 15%, rgba(37,99,235,0.18), transparent 60%),
+    radial-gradient(1000px 340px at 90% 20%, rgba(29,78,216,0.12), transparent 55%),
+    linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.92));
+  border: 1px solid var(--sc-border);
+  border-radius: 28px;
+  box-shadow: var(--sc-shadow);
+  padding: 22px 22px 20px;
+  margin-bottom: 18px;
+}
+
+.sc-title{
+  margin: 0;
+  font-size: 40px;
+  letter-spacing: -0.02em;
+  font-weight: 900;
+}
+
+.sc-subtitle{
+  margin: 10px 0 0;
+  color: var(--sc-muted);
+  font-size: 16px;
+  line-height: 1.55;
+  max-width: 820px;
+}
+
+/* empty state */
+.sc-empty{
+  margin-top: 18px;
+  padding: 18px 18px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.75);
+  border: 1px dashed rgba(15,23,42,0.18);
+  color: var(--sc-muted);
+}
+
+/* category title */
+.sc-cat-title{
+  margin: 26px 6px 12px;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+/* grid */
+.sc-grid{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 980px){
+  .sc-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px){
+  .sc-grid{ grid-template-columns: 1fr; }
+  .sc-title{ font-size: 32px; }
+}
+
+/* card */
+.sc-card{
+  background: var(--sc-panel);
+  border: 1px solid var(--sc-border);
+  border-radius: var(--sc-radius);
+  overflow: hidden;
+  box-shadow: var(--sc-shadow-soft);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+
+.sc-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 22px 55px rgba(15,23,42,0.12);
+  border-color: rgba(29,78,216,0.22);
+}
+
+/* image */
+.sc-img{
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  display: block;
+  background: #e2e8f0;
+}
+
+.sc-card-body{
+  padding: 14px 14px 16px;
+}
+
+/* name + chips row */
+.sc-name{
+  font-size: 18px;
+  font-weight: 900;
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+}
+
+.sc-chips{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 10px;
+}
+
+.sc-chip{
+  background: var(--sc-chip);
+  color: #1e293b;
+  font-size: 12.5px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(29,78,216,0.12);
+}
+
+/* meta text */
+.sc-meta{
+  margin-top: 6px;
+  color: var(--sc-muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.sc-meta b{
+  color: #1e293b;
+}
+
+/* service link */
+.sc-service a{
+  color: var(--sc-blue2);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.sc-service a:hover{
+  text-decoration: underline;
+}
+
+/* price */
+.sc-price{
+  margin-top: 10px;
+  font-weight: 900;
+  font-size: 15px;
+  color: #0f172a;
+}
+
+/* buttons */
+.sc-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: transform .12s ease, background .12s ease, border-color .12s ease, color .12s ease;
+  user-select: none;
+}
+
+.sc-btn:active{ transform: scale(0.98); }
+
+.sc-btn-outline{
+  color: var(--sc-blue2);
+  border: 2px solid rgba(37,99,235,0.25);
+  background: rgba(255,255,255,0.85);
+}
+
+.sc-btn-outline:hover{
+  border-color: rgba(37,99,235,0.45);
+  background: rgba(37,99,235,0.06);
+}
+
+/* =========================
+   Profile page layout
+   ========================= */
+.sc-profile{
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+@media (max-width: 980px){
+  .sc-profile{ grid-template-columns: 1fr; }
+}
+
+.sc-profile-card{
+  background: var(--sc-panel);
+  border: 1px solid var(--sc-border);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: var(--sc-shadow-soft);
+}
+
+.sc-profile-img{
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+  display: block;
+  background: #e2e8f0;
+}
+
+.sc-profile-body{
+  padding: 14px 16px 16px;
+}
+
+.sc-badges{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.sc-badge{
+  background: rgba(37,99,235,0.08);
+  color: #1e293b;
+  border: 1px solid rgba(37,99,235,0.16);
+  font-size: 13px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+/* profile text section */
+.sc-section{
+  background: var(--sc-panel);
+  border: 1px solid var(--sc-border);
+  border-radius: 24px;
+  box-shadow: var(--sc-shadow-soft);
+  padding: 18px 18px 20px;
+}
+
+.sc-section h2{
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.sc-section h3{
+  margin: 16px 0 6px;
+  font-size: 15px;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.sc-section p, .sc-section li{
+  color: var(--sc-muted);
+  line-height: 1.7;
+  font-size: 14px;
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app
+    xmlns="https://jakarta.ee/xml/ns/jakartaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+    version="5.0">
+
+  <display-name>CA2</display-name>
+
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+  <context-param>
+  <param-name>PAYPAL_CLIENT_ID</param-name>
+  <param-value>AeToUkLoAIODRck3LdWpZF_CuQuVET7mTZSys9M6xT-bInkVbzZVw5i3HR_EemSZqI17BIDHUYdO8yYR</param-value>
+</context-param>
+
+<context-param>
+  <param-name>PAYPAL_SECRET</param-name>
+  <param-value>EJpru0ERA6j-ZEDv3AtcGFzRs_dVBVqWF8lt21gglwA2ogGlPalV2xfa_EBQ361Pq-4dEo-o2Z6GK7Pk</param-value>
+</context-param>
+
+<context-param>
+  <param-name>PAYPAL_MODE</param-name>
+  <param-value>sandbox</param-value>
+</context-param>
+
+
+
+</web-app>
