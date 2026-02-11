@@ -116,12 +116,12 @@ public class CartDAO {
     }
 
     public void addServiceWithBooking(int userId, int serviceId, int qty,
-                                      String bookingDate, String bookingTime, String bookingTimeDisplay)
-            throws SQLException {
+            String bookingDate, String bookingTime, String bookingTimeDisplay,
+            Integer slotId) throws SQLException {
 
         int cartId = getOrCreateCartId(userId);
 
-        String find = "SELECT item_id, quantity FROM client_cart_items WHERE cart_id=? AND service_id=? LIMIT 1";
+        String find = "SELECT item_id FROM client_cart_items WHERE cart_id=? AND service_id=? LIMIT 1";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(find)) {
@@ -134,17 +134,32 @@ public class CartDAO {
                     int itemId = rs.getInt("item_id");
 
                     String upd = """
-                        UPDATE client_cart_items 
-                        SET quantity=?, booking_date=?, booking_time=?, booking_time_display=? 
+                        UPDATE client_cart_items
+                        SET quantity=?, booking_date=?, booking_time=?, booking_time_display=?, slot_id=?
                         WHERE item_id=?
                     """;
 
                     try (PreparedStatement ups = conn.prepareStatement(upd)) {
                         ups.setInt(1, Math.max(qty, 1));
                         ups.setString(2, bookingDate);
-                        ups.setString(3, bookingTime);
+
+                        // booking_time safe insert (HH:mm or HH:mm:ss)
+                        String bt = bookingTime;
+                        if (bt == null || bt.isBlank() || "-".equals(bt)) {
+                            ups.setNull(3, Types.TIME);
+                        } else {
+                            bt = bt.trim();
+                            if (bt.length() == 5) bt = bt + ":00";
+                            ups.setTime(3, Time.valueOf(bt));
+                        }
+
                         ups.setString(4, bookingTimeDisplay);
-                        ups.setInt(5, itemId);
+
+                        if (slotId == null) ups.setNull(5, Types.INTEGER);
+                        else ups.setInt(5, slotId);
+
+                        ups.setInt(6, itemId);
+
                         ups.executeUpdate();
                     }
                     return;
@@ -153,9 +168,9 @@ public class CartDAO {
         }
 
         String insert = """
-            INSERT INTO client_cart_items 
-                (cart_id, service_id, quantity, booking_date, booking_time, booking_time_display) 
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO client_cart_items
+                (cart_id, service_id, quantity, booking_date, booking_time, booking_time_display, slot_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         """;
 
         try (Connection conn = DBConnection.getConnection();
@@ -165,8 +180,22 @@ public class CartDAO {
             ps.setInt(2, serviceId);
             ps.setInt(3, Math.max(qty, 1));
             ps.setString(4, bookingDate);
-            ps.setString(5, bookingTime);
+
+            // booking_time safe insert (HH:mm or HH:mm:ss)
+            String bt = bookingTime;
+            if (bt == null || bt.isBlank() || "-".equals(bt)) {
+                ps.setNull(5, Types.TIME);
+            } else {
+                bt = bt.trim();
+                if (bt.length() == 5) bt = bt + ":00";
+                ps.setTime(5, Time.valueOf(bt));
+            }
+
             ps.setString(6, bookingTimeDisplay);
+
+            if (slotId == null) ps.setNull(7, Types.INTEGER);
+            else ps.setInt(7, slotId);
+
             ps.executeUpdate();
         }
     }
@@ -209,17 +238,19 @@ public class CartDAO {
         int cartId = getOrCreateCartId(userId);
 
         String sql = """
-            SELECT i.item_id, i.cart_id, i.product_id, i.service_id, i.quantity,
-                   i.booking_date, i.booking_time, i.booking_time_display,
-                   COALESCE(p.product_name, s.service_name) AS item_name,
-                   COALESCE(p.price, s.price) AS unit_price,
-                   COALESCE(p.image_path, s.service_image) AS image_path
-            FROM client_cart_items i
-            LEFT JOIN products p ON i.product_id = p.product_id
-            LEFT JOIN service s ON i.service_id = s.service_id
-            WHERE i.cart_id = ?
-            ORDER BY i.item_id DESC
-        """;
+        	    SELECT i.item_id, i.cart_id, i.product_id, i.service_id, i.quantity,
+        	           i.booking_date, i.booking_time, i.booking_time_display,
+        	           i.slot_id,
+        	           COALESCE(p.product_name, s.service_name) AS item_name,
+        	           COALESCE(p.price, s.price) AS unit_price,
+        	           COALESCE(p.image_path, s.service_image) AS image_path
+        	    FROM client_cart_items i
+        	    LEFT JOIN products p ON i.product_id = p.product_id
+        	    LEFT JOIN service s ON i.service_id = s.service_id
+        	    WHERE i.cart_id = ?
+        	    ORDER BY i.item_id DESC
+        	""";
+
 
         List<CartItem> list = new ArrayList<>();
 
@@ -244,6 +275,7 @@ public class CartDAO {
                     it.setBookingDate(rs.getString("booking_date"));
                     it.setBookingTime(rs.getString("booking_time"));
                     it.setBookingTimeDisplay(rs.getString("booking_time_display"));
+                    it.setSlotId((Integer) rs.getObject("slot_id"));
 
                     list.add(it);
                 }

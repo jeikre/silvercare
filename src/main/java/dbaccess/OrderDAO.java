@@ -27,11 +27,11 @@ public class OrderDAO {
         }
         throw new SQLException("Failed to create order");
     }
-
     public void insertOrderItemsFromCart(int orderId, List<CartItem> items) throws SQLException {
         String sql = """
             INSERT INTO order_items
-            (order_id, item_type, product_id, service_id, item_name, unit_price, quantity, booking_date, booking_time, booking_time_display)
+            (order_id, item_type, product_id, service_id, item_name, unit_price, quantity, 
+             booking_date, booking_time, booking_time_display)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
@@ -39,6 +39,7 @@ public class OrderDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             for (CartItem it : items) {
+
                 String type = (it.getProductId() != null) ? "PRODUCT" : "SERVICE";
 
                 ps.setInt(1, orderId);
@@ -54,20 +55,33 @@ public class OrderDAO {
                 ps.setBigDecimal(6, it.getUnitPrice());
                 ps.setInt(7, it.getQuantity());
 
-                // booking fields
-                if (it.getBookingDate() == null || it.getBookingDate().equals("-")) ps.setNull(8, Types.DATE);
-                else ps.setDate(8, Date.valueOf(it.getBookingDate()));
+                // booking_date
+                String bd = it.getBookingDate();
+                if (bd == null || bd.equals("-") || bd.isBlank()) {
+                    ps.setNull(8, Types.DATE);
+                } else {
+                    ps.setDate(8, Date.valueOf(bd));
+                }
 
-                if (it.getBookingTime() == null || it.getBookingTime().equals("-")) ps.setNull(9, Types.TIME);
-                else ps.setTime(9, Time.valueOf(it.getBookingTime()));
+                // booking_time  (THIS IS WHERE THE NEW CODE GOES)
+                String bt = it.getBookingTime();
+                if (bt == null || bt.equals("-") || bt.isBlank()) {
+                    ps.setNull(9, Types.TIME);
+                } else {
+                    bt = bt.trim();
+                    if (bt.length() == 5) bt = bt + ":00"; // HH:mm → HH:mm:ss
+                    ps.setTime(9, Time.valueOf(bt));
+                }
 
                 ps.setString(10, it.getBookingTimeDisplay());
 
                 ps.addBatch();
             }
+
             ps.executeBatch();
         }
     }
+
 
     public void attachPaypalOrderId(int orderId, String paypalOrderId) throws SQLException {
         String sql = "UPDATE orders SET paypal_order_id=? WHERE order_id=?";
@@ -108,4 +122,15 @@ public class OrderDAO {
             ps.executeUpdate();
         }
     }
+    public boolean hasAnyOrderItems(int orderId) throws SQLException {
+        String sql = "SELECT 1 FROM order_items WHERE order_id=? LIMIT 1";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
 }

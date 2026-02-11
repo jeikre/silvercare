@@ -290,5 +290,10 @@
 .muted{
   color: #777;
 }
+/* FULL slot option (greyed) */
+select.booking-select option.slot-full {
+  color: #999;
+}
+
 
 

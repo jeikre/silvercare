@@ -281,3 +281,20 @@ body{
   line-height: 1.7;
   font-size: 14px;
 }
+/* push content down under fixed navbar */
+.sc-wrap {
+    max-width: 1120px;
+    margin: 90px auto 0;      /* FIXED: moved down */
+    padding: 26px 18px 70px;
+}
+
+.sc-img {
+    width: 100%;
+    height: 300px;          /* bigger & taller */
+    object-fit: cover;
+    object-position: top;   /* avoid cutting the face */
+    display: block;
+    background: #e2e8f0;
+}
+
+

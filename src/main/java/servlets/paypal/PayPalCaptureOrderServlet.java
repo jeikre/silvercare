@@ -10,6 +10,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+import dbaccess.OrderDAO;
+import models.CartItem;
+import java.util.List;
+
 @WebServlet("/paypal/capture-order")
 public class PayPalCaptureOrderServlet extends HttpServlet {
 
@@ -87,8 +91,19 @@ public class PayPalCaptureOrderServlet extends HttpServlet {
         // ✅ If payment completed, update DB + clear cart
         if ("COMPLETED".equalsIgnoreCase(status)) {
             try {
-                cartDAO.markOrderPaid(dbOrderId, paypalOrderId); // status=PAID + paypal_order_id
-                cartDAO.clearCart(userId);                      // clear cart items
+                // 1) Read cart items BEFORE clearing cart
+                List<CartItem> items = cartDAO.getCartItems(userId);
+
+                // 2) Insert into order_items (only if not inserted yet)
+                OrderDAO orderDAO = new OrderDAO();
+                if (!orderDAO.hasAnyOrderItems(dbOrderId)) {
+                    orderDAO.insertOrderItemsFromCart(dbOrderId, items);
+                }
+
+                // 3) Mark paid + clear cart
+                cartDAO.markOrderPaid(dbOrderId, paypalOrderId);
+                cartDAO.clearCart(userId);
+
             } catch (Exception e) {
                 e.printStackTrace();
                 response.setStatus(500);
@@ -96,6 +111,7 @@ public class PayPalCaptureOrderServlet extends HttpServlet {
                 return;
             }
         }
+
 
         // ✅ Return to frontend
         response.getWriter().write("{\"status\":\"" + status + "\"}");

@@ -45,7 +45,7 @@ BigDecimal totalWithGst = grandTotal.add(gst);
       <b>$<%= String.format("%.2f", totalWithGst.doubleValue()) %></b>
     </div>
 
-    <p class="hint">Payment is processed securely via PayPal (Sandbox first, Live later).</p>
+    <p class="hint">Payment is processed securely via PayPal</p>
 
     <!-- PayPal button container -->
     <div id="paypal-button-container"></div>

@@ -1,17 +1,22 @@
 package servlets.cart;
 
 import dbaccess.CartDAO;
+import dbaccess.ServiceDAO;
+import models.TimeSlot;
 import servlets.util.SessionGuard;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @WebServlet("/cart/addService")
 public class CartAddServiceServlet extends HttpServlet {
 
     private final CartDAO cartDAO = new CartDAO();
+    private final ServiceDAO serviceDAO = new ServiceDAO();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -26,7 +31,8 @@ public class CartAddServiceServlet extends HttpServlet {
         }
 
         int serviceId;
-        int qty = 1; // service default
+        int qty = 1;
+
         try {
             serviceId = Integer.parseInt(request.getParameter("service_id"));
             if (request.getParameter("quantity") != null) {
@@ -38,38 +44,79 @@ public class CartAddServiceServlet extends HttpServlet {
             return;
         }
 
-        // ✅ booking fields from your service booking form
-        String bookingDate = request.getParameter("booking_date"); // ex: 2026-02-06
-        String bookingTime = request.getParameter("booking_time"); // ex: 14:00:00 or 14:00
-        String bookingTimeDisplay = request.getParameter("booking_time_display"); // ex: 2:00 PM
+        String bookingDate = request.getParameter("booking_date");
+        String slotIdStr   = request.getParameter("slot_id");
+
+        if (bookingDate == null || bookingDate.isBlank() || slotIdStr == null || slotIdStr.isBlank()) {
+            redirectBack(request, response, serviceId, "missingBooking");
+            return;
+        }
+
+        Integer slotId;
+        try {
+            slotId = Integer.parseInt(slotIdStr);
+        } catch (Exception e) {
+            redirectBack(request, response, serviceId, "badSlot");
+            return;
+        }
+
+        // lookup slot details from DB
+        String bookingTime = null;         // HH:mm:ss
+        String bookingTimeDisplay = null;
 
         try {
-        	cartDAO.addServiceWithBooking(userId, serviceId, qty, bookingDate, bookingTime, bookingTimeDisplay);
+            List<TimeSlot> slots = serviceDAO.getTimeSlotsByServiceId(serviceId, bookingDate);
 
-        	// Prefer redirect back to service details (stay on same page)
-        	String returnTo = request.getParameter("returnTo");
-        	if (returnTo == null || returnTo.isBlank()) {
-        	    // fallback if not provided
-        	    returnTo = request.getContextPath() + "/services/details?service_id=" + serviceId;
-        	}
+            for (TimeSlot s : slots) {
+                if (s.getSlotId() == slotId) {
+                    bookingTime = s.getTimeValue();
+                    bookingTimeDisplay = s.getDisplayLabel();
+                    break;
+                }
+            }
+        } catch (Exception ignored) {}
 
-        	if (returnTo.contains("?")) {
-        	    response.sendRedirect(returnTo + "&added=1");
-        	} else {
-        	    response.sendRedirect(returnTo + "?added=1");
-        	}
+        if (bookingTime == null || bookingTime.isBlank()) {
+            redirectBack(request, response, serviceId, "slotNotFound");
+            return;
+        }
+
+        // ✅ BLOCK if FULL (capacity=1)
+        try {
+            Map<Integer, Integer> bookedMap = serviceDAO.getBookedCountBySlot(serviceId, bookingDate);
+            int booked = bookedMap.getOrDefault(slotId, 0);
+            if (booked >= 1) {
+                redirectBack(request, response, serviceId, "slotFull");
+                return;
+            }
+        } catch (Exception e) {
+            redirectBack(request, response, serviceId, "slotCheckFail");
+            return;
+        }
+
+        try {
+            cartDAO.addServiceWithBooking(userId, serviceId, qty, bookingDate, bookingTime, bookingTimeDisplay, slotId);
+
+            String returnTo = request.getParameter("returnTo");
+            if (returnTo == null || returnTo.isBlank()) {
+                returnTo = request.getContextPath() + "/services/details?service_id=" + serviceId;
+            }
+
+            response.sendRedirect(returnTo + (returnTo.contains("?") ? "&" : "?") + "added=1");
 
         } catch (Exception e) {
-        	String returnTo = request.getParameter("returnTo");
-        	if (returnTo == null || returnTo.isBlank()) {
-        	    returnTo = request.getContextPath() + "/services/details?service_id=" + serviceId;
-        	}
-        	if (returnTo.contains("?")) {
-        	    response.sendRedirect(returnTo + "&err=add");
-        	} else {
-        	    response.sendRedirect(returnTo + "?err=add");
-        	}
-
+            e.printStackTrace();
+            redirectBack(request, response, serviceId, "add");
         }
+    }
+
+    private void redirectBack(HttpServletRequest request, HttpServletResponse response, int serviceId, String err)
+            throws IOException {
+
+        String returnTo = request.getParameter("returnTo");
+        if (returnTo == null || returnTo.isBlank()) {
+            returnTo = request.getContextPath() + "/services/details?service_id=" + serviceId;
+        }
+        response.sendRedirect(returnTo + (returnTo.contains("?") ? "&" : "?") + "err=" + err);
     }
 }

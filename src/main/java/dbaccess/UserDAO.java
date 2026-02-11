@@ -57,7 +57,8 @@ public class UserDAO {
 
                 User u = new User();
                 u.setUserId(rs.getInt("user_id"));
-                u.setRole(Role.valueOf(roleStr));
+                //u.setRole(Role.valueOf(roleStr));
+                u.setRole(Role.valueOf(roleStr.toUpperCase()));
                 u.setName(rs.getString("name"));
                 u.setEmail(rs.getString("email"));
                 u.setPassword(dbPassword);
@@ -139,7 +140,8 @@ public class UserDAO {
 
                 User u = new User();
                 u.setUserId(rs.getInt("user_id"));
-                u.setRole(Role.valueOf(rs.getString("role")));
+                //u.setRole(Role.valueOf(rs.getString("role")));
+                u.setRole(Role.valueOf(rs.getString("role").toUpperCase()));
                 u.setName(rs.getString("name"));
                 u.setEmail(rs.getString("email"));
                 u.setPassword(rs.getString("password"));
@@ -160,7 +162,8 @@ public class UserDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return Role.valueOf(rs.getString("role"));
+                    //return Role.valueOf(rs.getString("role"));
+                	return Role.valueOf(rs.getString("role").toUpperCase());
                 }
             }
         }

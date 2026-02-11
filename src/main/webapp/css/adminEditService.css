@@ -1,85 +1,270 @@
 @charset "UTF-8";
-/* Center layout */
-.form-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
-    margin-bottom: 80px;
+
+/* ===== Page shell ===== */
+.edit-service-page {
+  width: min(1400px, 96%);
+  margin: 28px auto 80px;
 }
 
-/* White card for form */
-.form-container form {
-    background: #ffffff;
-    width: 550px;
-    padding: 35px 45px;
-    border-radius: 16px;
-    box-shadow: 0px 6px 22px rgba(0, 0, 0, 0.10);
-}
-
-/* Page Title */
+/* Title */
 .page-title {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 36px;
-    font-weight: 700;
-    color: #1c3d5a;
+  text-align: center;
+  margin: 18px 0 22px;
+  font-size: 34px;
+  font-weight: 800;
+  color: #1c3d5a;
+}
+
+/* ===== 3-column layout ===== */
+.edit-grid {
+  display: grid;
+  grid-template-columns: 420px minmax(520px, 1fr) 360px;
+  gap: 20px;
+  align-items: start;
+}
+
+/* Make cards consistent */
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.10);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* ===== Left form card (your existing styles improved) ===== */
+.form-container {
+  width: 100%;
+  margin: 0;               /* remove big top spacing */
+  display: block;          /* grid handles layout now */
+}
+
+.form-container form {
+  width: 100%;
+  padding: 26px 26px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: none;        /* card wrapper will handle shadow */
+}
+
+.form-card {
+  padding: 0;              /* the form already has padding */
 }
 
 /* Labels */
 .form-container label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 600;
-    color: #333;
-    font-size: 15px;
+  display: block;
+  margin: 0 0 6px;
+  font-weight: 700;
+  color: #2b2b2b;
+  font-size: 14px;
 }
 
 /* Inputs and textarea */
 .form-container input,
-.form-container textarea {
-    width: 100%;
-    background: #f6f8ff;
-    padding: 14px;
-    font-size: 15px;
-    border: 1px solid #d8d8d8;
-    border-radius: 8px;
-    margin-bottom: 18px;
-    transition: all 0.25s ease-in-out;
+.form-container textarea,
+.form-container select {
+  width: 100%;
+  background: #f6f8ff;
+  padding: 12px 12px;
+  font-size: 14px;
+  border: 1px solid #d8d8d8;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  transition: all 0.2s ease;
 }
 
 .form-container input:focus,
-.form-container textarea:focus {
-    background: #ffffff;
-    border-color: #1c3d5a;
-    box-shadow: 0 0 0 2px rgba(28, 61, 90, 0.20);
-    outline: none;
+.form-container textarea:focus,
+.form-container select:focus {
+  background: #ffffff;
+  border-color: #1c3d5a;
+  box-shadow: 0 0 0 3px rgba(28, 61, 90, 0.18);
+  outline: none;
 }
 
-/* Bigger textarea */
+/* Textarea */
 .form-container textarea {
-    height: 110px;
-    resize: none;
+  height: 120px;
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* File input nicer */
+.form-container input[type="file"] {
+  padding: 10px;
+  background: #fff;
 }
 
 /* Save button */
 .btn-primary {
-    width: 100%;
-    padding: 14px;
-    background: #1c3d5a;
-    color: white;
-    font-size: 18px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.25s;
+  width: 100%;
+  padding: 13px 14px;
+  background: #1c3d5a;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .btn-primary:hover {
-    background: #153049;
+  background: #153049;
 }
 
-/* Extra spacing for bottom */
-.form-container form button {
-    margin-top: 5px;
+/* ===== Middle: Time slots list ===== */
+.slots-panel {
+  padding: 18px;
 }
+
+.slots-panel h2 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #1c3d5a;
+}
+
+/* Scrollable list so it doesn't create giant empty space */
+.slots-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: calc(100vh - 220px);
+  overflow: auto;
+  padding-right: 6px;
+}
+
+/* Slot row card */
+.slot-item {
+  background: #f7f9ff;
+  border: 1px solid rgba(28,61,90,0.12);
+  border-radius: 14px;
+  padding: 14px 14px;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+}
+
+.slot-left {
+  min-width: 0;
+}
+
+.slot-title {
+  font-weight: 800;
+  color: #1c3d5a;
+  margin-bottom: 6px;
+}
+
+.slot-meta {
+  font-size: 12px;
+  color: rgba(0,0,0,0.55);
+  line-height: 1.4;
+}
+
+/* Delete button */
+.slot-item .btn-delete,
+.slot-item button {
+  white-space: nowrap;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.18);
+  background: #fff;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.slot-item .btn-delete:hover,
+.slot-item button:hover {
+  border-color: rgba(28,61,90,0.35);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* ===== Right: Add slot panel ===== */
+.addslot-panel {
+  padding: 18px;
+  position: sticky;
+  top: 18px;
+}
+
+.addslot-panel h2 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #1c3d5a;
+}
+
+/* Make the Add Slot form compact */
+.addslot-panel label {
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  display: block;
+  color: #2b2b2b;
+}
+
+.addslot-panel input,
+.addslot-panel select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #d8d8d8;
+  background: #f6f8ff;
+  margin-bottom: 12px;
+}
+
+.addslot-panel .btn-add {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: none;
+  background: #1c3d5a;
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.addslot-panel .btn-add:hover {
+  background: #153049;
+}
+
+.addslot-tip {
+  font-size: 12px;
+  color: rgba(0,0,0,0.55);
+  line-height: 1.4;
+  margin-top: 8px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1200px) {
+  .edit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .addslot-panel {
+    position: static;
+  }
+
+  .slots-list {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+.back-btn {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.18);
+  background: #fff;
+  color: #1c3d5a;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.back-btn:hover {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  border-color: rgba(28,61,90,0.35);
+}
+

@@ -12,42 +12,6 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-/*@WebServlet("/services/list")
-public class ServiceListServlet extends HttpServlet {
-
-    private final ServiceDAO serviceDAO = new ServiceDAO();
-    private final ServiceCategoryDAO categoryDAO = new ServiceCategoryDAO();
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        try {
-            String cat = request.getParameter("category_id");
-
-            if (cat != null && !cat.trim().isEmpty()) {
-                int categoryId = Integer.parseInt(cat);
-
-                List<Service> services = serviceDAO.getServicesByCategory(categoryId);
-                ServiceCategory category = categoryDAO.getCategoryById(categoryId);
-
-                request.setAttribute("services", services);
-                request.setAttribute("category", category);
-                request.setAttribute("selectedCategoryId", categoryId);
-
-            } else {
-                List<Service> services = serviceDAO.getAllServices();
-                request.setAttribute("services", services);
-            }
-
-        } catch (Exception e) {
-            request.setAttribute("serviceError", "Unable to load services.");
-        }
-
-        request.getRequestDispatcher("/services/serviceList.jsp").forward(request, response);
-    }
-
-}*/
 
 @WebServlet("/services/list")
 public class ServiceListServlet extends HttpServlet {

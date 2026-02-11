@@ -3,13 +3,13 @@ package dbaccess;
 import models.Role;
 import models.Service;
 import models.User;
-import models.ServiceTimeSlot;
+import models.TimeSlot;
 
 import java.sql.*;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import models.ServiceTimeSlot;
-
 public class AdminDAO {
 
     // =========================
@@ -294,9 +294,22 @@ public class AdminDAO {
             }
         }
     }
-    public List<models.ServiceTimeSlot> getTimeSlotsByServiceId(int serviceId) throws SQLException {
-        String sql = "SELECT slot_id, service_id, slot_time FROM service_time_slot WHERE service_id=? ORDER BY slot_id ASC";
-        List<models.ServiceTimeSlot> list = new ArrayList<>();
+ // =========================
+ // TIME SLOTS (ADMIN)
+ // =========================
+    // =========================
+    // TIME SLOTS (ADMIN)
+    // =========================
+
+    public List<TimeSlot> getTimeSlotsByServiceId(int serviceId) throws SQLException {
+
+        String sql =
+            "SELECT slot_id, service_id, display_label, time_value, start_time, end_time " +
+            "FROM service_time_slot " +
+            "WHERE service_id = ? " +
+            "ORDER BY slot_id ASC";
+
+        List<TimeSlot> list = new ArrayList<>();
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -305,46 +318,137 @@ public class AdminDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    models.ServiceTimeSlot t = new models.ServiceTimeSlot();
+                    TimeSlot t = new TimeSlot();
                     t.setSlotId(rs.getInt("slot_id"));
                     t.setServiceId(rs.getInt("service_id"));
-                    t.setSlotTime(rs.getString("slot_time"));
+                    t.setDisplayLabel(rs.getString("display_label"));
+                    t.setTimeValue(rs.getString("time_value"));   // e.g. "18:00:00"
+                    t.setStartTime(rs.getString("start_time"));   // may be null
+                    t.setEndTime(rs.getString("end_time"));       // may be null
                     list.add(t);
                 }
             }
         }
+
         return list;
     }
 
-    public boolean addTimeSlot(int serviceId, String slotTime) throws SQLException {
-        String sql = "INSERT INTO service_time_slot (service_id, slot_time) VALUES (?, ?)";
+    /**
+     * mode:
+     *  - "single": use single HH:mm
+     *  - "range": use start HH:mm and end HH:mm
+     *
+     * Stores:
+     *  - time_value = start time (HH:mm:00)
+     *  - display_label = either "06:00 PM" or "01:00 PM - 06:00 PM"
+     *  - start_time/end_time = friendly 12h strings (optional)
+     */
+    public boolean addTimeSlot(int serviceId, String mode, String singleHHmm, String startHHmm, String endHHmm)
+            throws SQLException {
+
+        if (mode == null) mode = "single";
+        mode = mode.trim().toLowerCase();
+
+        String displayLabel;
+        String timeValue;
+        String startTimeFriendly = null;
+        String endTimeFriendly = null;
+
+        if ("range".equals(mode)) {
+
+            if (isBlank(startHHmm) || isBlank(endHHmm)) return false;
+
+            // DB time_value uses start time
+            timeValue = toHHmmss(startHHmm);
+
+            startTimeFriendly = to12h(startHHmm);
+            endTimeFriendly = to12h(endHHmm);
+
+            displayLabel = startTimeFriendly + " - " + endTimeFriendly;
+
+        } else {
+            // default = single
+            if (isBlank(singleHHmm)) return false;
+
+            timeValue = toHHmmss(singleHHmm);
+
+            startTimeFriendly = to12h(singleHHmm);
+            displayLabel = startTimeFriendly;  // e.g. "06:00 PM"
+        }
+
+        // Optional: prevent duplicate for same service
+        if (existsSameSlot(serviceId, displayLabel, timeValue)) {
+            return false;
+        }
+
+        String sql =
+            "INSERT INTO service_time_slot (service_id, display_label, time_value, start_time, end_time) " +
+            "VALUES (?, ?, ?, ?, ?)";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, serviceId);
-            ps.setString(2, slotTime);
+            ps.setString(2, displayLabel);
+            ps.setString(3, timeValue);
+
+            if (startTimeFriendly == null) ps.setNull(4, Types.VARCHAR);
+            else ps.setString(4, startTimeFriendly);
+
+            if (endTimeFriendly == null) ps.setNull(5, Types.VARCHAR);
+            else ps.setString(5, endTimeFriendly);
+
             return ps.executeUpdate() > 0;
         }
     }
 
-    public boolean updateTimeSlot(int slotId, String slotTime) throws SQLException {
-        String sql = "UPDATE service_time_slot SET slot_time=? WHERE slot_id=?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+    public boolean deleteTimeSlot(int slotId, int serviceId) throws SQLException {
+        String sql = "DELETE FROM service_time_slot WHERE slot_id = ? AND service_id = ?";
 
-            ps.setString(1, slotTime);
-            ps.setInt(2, slotId);
-            return ps.executeUpdate() > 0;
-        }
-    }
-
-    public boolean deleteTimeSlot(int slotId) throws SQLException {
-        String sql = "DELETE FROM service_time_slot WHERE slot_id=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, slotId);
+            ps.setInt(2, serviceId);
             return ps.executeUpdate() > 0;
         }
     }
+
+    // ---------- helpers ----------
+
+    private boolean existsSameSlot(int serviceId, String displayLabel, String timeValue) throws SQLException {
+        String sql =
+            "SELECT 1 FROM service_time_slot " +
+            "WHERE service_id=? AND display_label=? AND time_value=? LIMIT 1";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, serviceId);
+            ps.setString(2, displayLabel);
+            ps.setString(3, timeValue);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
+    private static boolean isBlank(String s) {
+        return s == null || s.trim().isEmpty();
+    }
+
+    // "18:00" -> "18:00:00"
+    private static String toHHmmss(String hhmm) {
+        String t = hhmm.trim();
+        if (t.length() == 5) return t + ":00";
+        return t; // assume already HH:mm:ss
+    }
+
+    // "18:00" -> "06:00 PM"
+    private static String to12h(String hhmm) {
+        LocalTime lt = LocalTime.parse(hhmm.trim(), DateTimeFormatter.ofPattern("HH:mm"));
+        return lt.format(DateTimeFormatter.ofPattern("hh:mm a"));
+    }
+
 }

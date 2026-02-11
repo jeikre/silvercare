@@ -46,7 +46,7 @@ List<ServiceCategory> categories = (List<ServiceCategory>) obj;
 			placeholder="Duration (e.g. 60 mins)" required>
 
 		<!-- ✅ match servlet parameter name -->
-		<label>Service Image (optional)</label> <input type="file"
+		<label>Service Image</label> <input type="file"
 			name="service_image_file" accept="image/*">
 		<!-- ✅ Time Slots -->
 		<label style="margin-top: 12px; display: block;">Time Slots

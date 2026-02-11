@@ -18,6 +18,8 @@ public class CartItem {
 	private String bookingDate; // e.g. "2026-02-06"
 	private String bookingTime; // e.g. "14:00:00"
 	private String bookingTimeDisplay; // e.g. "2:00 PM"
+	private Integer slotId;
+
 
 	// ===== getters/setters =====
 	public int getItemId() {
@@ -107,4 +109,7 @@ public class CartItem {
 	public void setBookingTimeDisplay(String bookingTimeDisplay) {
 		this.bookingTimeDisplay = bookingTimeDisplay;
 	}
+	public Integer getSlotId() { return slotId; }
+	public void setSlotId(Integer slotId) { this.slotId = slotId; }
+
 }

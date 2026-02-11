@@ -2,6 +2,7 @@ package servlets.admin;
 
 import dbaccess.AdminDAO;
 import models.Service;
+import models.TimeSlot;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -13,14 +14,15 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
+@WebServlet("/admin/services/edit")
 @MultipartConfig(
     fileSizeThreshold = 1024 * 1024,
     maxFileSize = 5 * 1024 * 1024,
     maxRequestSize = 10 * 1024 * 1024
 )
-@WebServlet("/admin/services/edit")
 public class AdminEditServiceServlet extends HttpServlet {
 
     private final AdminDAO adminDAO = new AdminDAO();
@@ -46,8 +48,10 @@ public class AdminEditServiceServlet extends HttpServlet {
                 return;
             }
 
+            List<TimeSlot> slots = adminDAO.getTimeSlotsByServiceId(serviceId);
+
             request.setAttribute("service", s);
-            request.setAttribute("timeSlots", adminDAO.getTimeSlotsByServiceId(serviceId));
+            request.setAttribute("slots", slots);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,55 +69,38 @@ public class AdminEditServiceServlet extends HttpServlet {
 
         try {
             request.setCharacterEncoding("UTF-8");
+
+            String action = request.getParameter("action");
+            if (action == null) action = "save";
+
             int serviceId = Integer.parseInt(request.getParameter("service_id"));
 
-            // -----------------------
-            // 1) Delete a timeslot
-            // -----------------------
-            String deleteSlotId = request.getParameter("delete_slot_id");
-            if (deleteSlotId != null && !deleteSlotId.isBlank()) {
-                adminDAO.deleteTimeSlot(Integer.parseInt(deleteSlotId));
-                response.sendRedirect(request.getContextPath()
-                        + "/admin/services/edit?service_id=" + serviceId + "&updated=1");
+            // ===== Add slot =====
+            if ("addSlot".equalsIgnoreCase(action)) {
+
+                String mode = request.getParameter("slot_mode");  // single / range
+                String single = request.getParameter("single_time"); // HH:mm
+                String start = request.getParameter("start_time");   // HH:mm
+                String end = request.getParameter("end_time");       // HH:mm
+
+                boolean ok = adminDAO.addTimeSlot(serviceId, mode, single, start, end);
+
+                response.sendRedirect(request.getContextPath() + "/admin/services/edit?service_id=" + serviceId
+                        + (ok ? "&slotAdded=1" : "&slotErr=1"));
                 return;
             }
 
-            // -----------------------
-            // 2) Add a timeslot (single or range)
-            // -----------------------
-            String addSlot = request.getParameter("add_slot");
-            if ("1".equals(addSlot)) {
-                String slotType = request.getParameter("slot_type"); // single / range
-                String start = trimOrNull(request.getParameter("new_slot_start"));
-                String end = trimOrNull(request.getParameter("new_slot_end"));
+            // ===== Delete slot =====
+            if ("deleteSlot".equalsIgnoreCase(action)) {
+                int slotId = Integer.parseInt(request.getParameter("slot_id"));
+                boolean ok = adminDAO.deleteTimeSlot(slotId, serviceId);
 
-                if (start == null || start.isEmpty()) {
-                    response.sendRedirect(request.getContextPath()
-                            + "/admin/services/edit?service_id=" + serviceId + "&err=slotAdd");
-                    return;
-                }
-
-                String slotTime;
-                if ("range".equals(slotType)) {
-                    if (end == null || end.isEmpty()) {
-                        response.sendRedirect(request.getContextPath()
-                                + "/admin/services/edit?service_id=" + serviceId + "&err=slotAdd");
-                        return;
-                    }
-                    slotTime = start + "-" + end;  // e.g. 1pm-6pm or 1-6
-                } else {
-                    slotTime = start;              // e.g. 6pm
-                }
-
-                adminDAO.addTimeSlot(serviceId, slotTime);
-                response.sendRedirect(request.getContextPath()
-                        + "/admin/services/edit?service_id=" + serviceId + "&updated=1");
+                response.sendRedirect(request.getContextPath() + "/admin/services/edit?service_id=" + serviceId
+                        + (ok ? "&slotDeleted=1" : "&slotErr=1"));
                 return;
             }
 
-            // -----------------------
-            // 3) Update service main fields
-            // -----------------------
+            // ===== Save service details =====
             Service s = new Service();
             s.setServiceId(serviceId);
 
@@ -138,42 +125,15 @@ public class AdminEditServiceServlet extends HttpServlet {
 
             adminDAO.updateService(s);
 
-            // -----------------------
-            // 4) Bulk update timeslots text (existing)
-            // -----------------------
-            String[] slotIds = request.getParameterValues("slot_id");
-            String[] slotTimes = request.getParameterValues("slot_time");
-
-            if (slotIds != null && slotTimes != null && slotIds.length == slotTimes.length) {
-                for (int i = 0; i < slotIds.length; i++) {
-                    int slotId = Integer.parseInt(slotIds[i]);
-                    String st = trimOrNull(slotTimes[i]);
-                    if (st != null && !st.isEmpty()) {
-                        adminDAO.updateTimeSlot(slotId, st);
-                    }
-                }
-            }
-
-            response.sendRedirect(request.getContextPath()
-                    + "/admin/services/edit?service_id=" + serviceId + "&updated=1");
+            response.sendRedirect(request.getContextPath() + "/admin/services?updated=1");
 
         } catch (Exception e) {
             e.printStackTrace();
-            String sid = request.getParameter("service_id");
-            if (sid == null) sid = "";
-            response.sendRedirect(request.getContextPath()
-                    + "/admin/services/edit?service_id=" + sid + "&err=edit");
+            response.sendRedirect(request.getContextPath() + "/admin/services?err=edit");
         }
     }
 
-    private static String trimOrNull(String s) {
-        if (s == null) return null;
-        s = s.trim();
-        return s.isEmpty() ? null : s;
-    }
-
     private String saveUploadedServiceImage(HttpServletRequest request, String fieldName) throws Exception {
-
         Part filePart = request.getPart(fieldName);
         if (filePart == null || filePart.getSize() == 0) return null;
 
